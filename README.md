@@ -15,4 +15,4 @@ After that, you can simply save the url wherever you want and that will store th
 
 # Example
 
-See [here](http://127.0.0.1:5500/index.html?last=null&items=George%3A2%2CRingo%3A2%2CPaul%3A2%2CJohn%3A2) for a pre-filled example with 4 team members.
+See [here](https://htmlpreview.github.io/?https://github.com/gabrielecalvo/random-picker/blob/main/index.html?last=null&items=George%3A2%2CRingo%3A2%2CPaul%3A2%2CJohn%3A2) for a pre-filled example with 4 team members.
