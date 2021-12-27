@@ -2,7 +2,7 @@
 
 A simple random item picker that is able to read and set historical pick information in the url.
 
-![Sample](sample.png)
+![Sample](docs/sample.png)
 
 # Get started
 
