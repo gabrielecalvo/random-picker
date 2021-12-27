@@ -6,7 +6,7 @@ A simple random item picker that is able to read and set historical pick informa
 
 # Get started
 
-Simply go to [this url](https://htmlpreview.github.io/?https://github.com/gabrielecalvo/random-picker/blob/main/index.html) and setup your items to pick from.
+Simply go to [this url](https://gabrielecalvo.github.io/random-picker/index.html) and setup your items to pick from.
 
 After that, you can simply save the url wherever you want and that will store the state:
 
@@ -15,4 +15,4 @@ After that, you can simply save the url wherever you want and that will store th
 
 # Example
 
-See [here](https://htmlpreview.github.io/?https://github.com/gabrielecalvo/random-picker/blob/main/index.html?last=null&items=George%3A2%2CRingo%3A2%2CPaul%3A2%2CJohn%3A2) for a pre-filled example with 4 team members.
+See [here](https://gabrielecalvo.github.io/random-picker/index.html?last=null&items=George%3A2%2CRingo%3A2%2CPaul%3A2%2CJohn%3A2) for a pre-filled example with 4 team members.
