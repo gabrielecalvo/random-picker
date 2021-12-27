@@ -1,0 +1,16 @@
+<head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍀</text></svg>">
+	<script src='https://cdn.plot.ly/plotly-2.8.3.min.js'></script>
+</head>
+<body>
+    <h1>Random Picker</h1>
+    <p id="starting-text"></p>
+    <div>
+        <h3>Current probabilities of getting picked</h3>
+        <div id='piechart'></div>
+    </div>
+    <p id="picked-text"></p>
+    <button id="accept-picked" onclick="acceptPicked()" hidden=true>Accept</button>
+    <button id="pick-btn" onclick="pick()">Pick Next</button>
+    <script src='script.js'></script>
+</body>
