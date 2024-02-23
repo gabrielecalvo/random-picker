@@ -1,0 +1,26 @@
+{
+  "name": "random-picker",
+  "version": "1.0.0",
+  "description": "A simple random item picker that is able to read and set historical pick information in the url.",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./tests/setupJest.js"
+    ]
+  }
+}

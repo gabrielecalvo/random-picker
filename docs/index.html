@@ -15,6 +15,7 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"
   ></script>
+  <script src="./lib.js"></script>
 </head>
 <body>
   <!-- Modal -->
@@ -42,8 +43,8 @@
       <p class="lead mb-4">
         Add team members and pick among them at random. If someone has been picked last time, they are excluded from the
         immediately next pick. Probability of getting picked is <i>inversly proportional</i> to the times they have been
-        picked in the past. <br /><b>Note</b> that the state is saved in the url, so
-        <i>make sure you copy/bookmark it before closing the window.</i>
+        picked in the past. <br /><br />
+        <span id="sourceTypeParagraph"></span>
       </p>
 
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
@@ -75,9 +76,97 @@
       </div>
 
       <h3 id="piechart-title" hidden="true">Current probabilities of getting picked</h3>
+
+      <div id="spinner" class="text-center">
+        <span class="visually-hidden">Loading...</span>
+        <div class="spinner-border" role="status"></div>
+      </div>
+
       <div id="piechart"></div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 2000">
+    <div id="toastElem" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body"></div>
+    </div>
+  </div>
+
+  <script>
+    let state = {window};
+    let interimPicked = null
+
+    function updateView() {
+      document.querySelector(".spinner-border").hidden = false
+      if (
+        typeof state.data !== 'undefined' && 
+        Object.keys(state.data.pickCounts).length > 0
+      ) {
+        document.getElementById("pick-btn").hidden = false;
+        document.getElementById("piechart-title").hidden = false;
+        lib.createPiePlot(state.data, "piechart");
+      }
+      // console.log("pickCounts", state.data.pickCounts)
+      document.querySelector(".spinner-border").hidden = true
+    }
+
+    function makeToast(body){
+      const toastElement = document.getElementById('toastElem');
+      const toastBody = toastElement.querySelector('div.toast-body');
+      toastBody.textContent = body;
+      let toast = bootstrap.Toast.getOrCreateInstance(toastElement)
+      return toast
+    }
+
+    function addItem() {
+      const item_name = document.getElementById("new-item-input").value;
+      if (state.data.pickCounts.hasOwnProperty(item_name)) {
+          makeToast(`🛑 "${item_name}" already exists, choose another name`).show()
+      } else {
+        console.log("adding item", item_name, state.source);
+        newState = {
+          "data": structuredClone(state.data),
+          "source": structuredClone(state.source),
+          "window": state.window,
+        }
+        newState.data.pickCounts[item_name] = 0;
+        lib.storeState(newState).then(
+          () => {updateView(); makeToast(`👌 item "${item_name}" added successfully`).show()}
+        ).catch(
+          (err) => {makeToast(`⚠ an error has occurred when writing the state to storage: ${err}`).show()}
+        );
+      }
+      
+    }
+
+    function pick() {
+      interimPicked = lib.pickItem(state);
+      document.getElementById("picked-text").innerHTML = `Fate chose <b>${interimPicked}</b>. Do you accept or do you want to pick again?`;
+      document.getElementById("accept-picked").hidden = false;
+      document.getElementById("pick-btn").innerHTML = "Pick Again";
+    }
+
+    function acceptPicked() {
+      state.data.pickCounts[interimPicked] += 1;
+      state.data.lastPicked = interimPicked
+      lib.storeState(state).then(
+        () => {updateView(); makeToast(`👌 state updated successfully`).show()}
+      ).catch(
+        (err) => {makeToast(`⚠ an error has occurred when writing the state to storage: ${err}`).show()}
+      );
+      
+    }
+
+    document.addEventListener("DOMContentLoaded", function(event){
+      lib.getDataFromQueryString(state).then(()=> {
+        const sourceTypeParagraph = document.getElementById("sourceTypeParagraph")
+        if (state.source.type === "remote"){
+          sourceTypeParagraph.innerHTML = "<b>Note: </b>you are using a remote storage, any accepted changes will be irreversible."
+        } else {
+          sourceTypeParagraph.innerHTML = "<b>Note: </b>that the state is saved in the url, <i>so make sure you copy/bookmark it before closing the window.</i>"
+        }
+        updateView()
+      });  
+    }) 
+  </script>
 </body>
